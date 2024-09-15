@@ -194,6 +194,31 @@
         .desired-outcome p {
             margin-left: 20px;
         }
+
+        #saveIndicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .saving {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .saved {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .error {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
     </style>
 </head>
 
@@ -204,6 +229,8 @@
         <button id="notepadIcon" class="text-blue-600 hover:text-gray-800">
             <a href="index.html">
                 <i class="fas fa-pencil-alt"></i></a>
+            <!-- Add save indicator -->
+            <div id="saveIndicator"></div>
         </button>
     </div>
 
@@ -337,14 +364,36 @@
             renderObjective(objective, `objective${index + 1}`);
         });
 
+        // Function to show save indicator
+        function showSaveIndicator(message, type) {
+            const indicator = document.getElementById('saveIndicator');
+            indicator.textContent = message;
+            indicator.className = type;
+            indicator.style.display = 'block';
+
+            if (type !== 'error') {
+                setTimeout(() => {
+                    indicator.style.display = 'none';
+                }, 2000);
+            }
+        }
+
         // Function to save a single field's data to Firebase
         function saveField(refPath, value) {
+            showSaveIndicator('Saving...', 'saving');
             database.ref(refPath).set(value)
-                .catch((error) => console.error("Error saving data:", error));
+                .then(() => {
+                    showSaveIndicator('Saved!', 'saved');
+                })
+                .catch((error) => {
+                    console.error("Error saving data:", error);
+                    showSaveIndicator('Error saving data', 'error');
+                });
         }
 
         // Function to load data from Firebase
         function loadData() {
+            showSaveIndicator('Loading data...', 'saving');
             database.ref('business-goal-planning').once('value')
                 .then((snapshot) => {
                     const data = snapshot.val();
@@ -368,12 +417,14 @@
                         });
 
                         setupEventListeners();
+                        showSaveIndicator('Data loaded!', 'saved');
                     }
                 })
-                .catch((error) => console.error("Error loading data:", error));
+                .catch((error) => {
+                    console.error("Error loading data:", error);
+                    showSaveIndicator('Error loading data', 'error');
+                });
         }
-
-
 
         // Setup event listeners
         function setupEventListeners() {
@@ -423,7 +474,6 @@
             loadData();
         });
     </script>
-
 </body>
 
 </html>
