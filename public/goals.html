@@ -11,6 +11,7 @@
     <!-- <link rel="stylesheet" href="styles.css"> -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -251,7 +252,6 @@
 
     <!-- Scripts -->
     <script>
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDNAtg7HR9-AsXtARV_xnztFhrWHvtbJz0",
             authDomain: "optimal-human.firebaseapp.com",
@@ -264,9 +264,8 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        const app = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-
         // Objective Data
         const objectives = [
             {
@@ -302,36 +301,41 @@
         function renderObjective(objective, objectiveId) {
             const objectiveContainer = document.getElementById(objectiveId);
             const objectiveHTML = `
-                <div class="objective-header">
-                    <div class="objective-title">${objective.title}</div>
-                    <input type="text" class="objective-name" value="${objective.objectiveName}">
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="key-results">Key Results</th>
-                            <th class="measured-by">MEASURED BY</th>
-                            <th class="set-deadline">SET DEADLINE</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${objective.keyResults.map(kr => `
-                            <tr>
-                                <td>
-                                    <div class="key-result-input">
-                                        <span class="key-result-number">${kr.id}.</span>
-                                        <input type="text" value="${kr.result}">
-                                    </div>
-                                </td>
-                                <td><input type="text" value="${kr.measuredBy}"></td>
-                                <td><input type="text" value="${kr.deadline}"></td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
+        <div class="objective-header">
+            <div class="objective-title">${objective.title}</div>
+            <input type="text" class="objective-name" value="${objective.objectiveName}">
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th class="key-results">Key Results</th>
+                    <th class="measured-by">MEASURED BY</th>
+                    <th class="set-deadline">SET DEADLINE</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${objective.keyResults.map(kr => `
+                    <tr>
+                        <td>
+                            <div class="key-result-input">
+                                <span class="key-result-number">${kr.id}.</span>
+                                <input type="text" value="${kr.result}">
+                            </div>
+                        </td>
+                        <td><input type="text" value="${kr.measuredBy}"></td>
+                        <td><input type="text" value="${kr.deadline}"></td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
             objectiveContainer.innerHTML = objectiveHTML;
         }
+
+        // Render all objectives
+        objectives.forEach((objective, index) => {
+            renderObjective(objective, `objective${index + 1}`);
+        });
 
         // Function to save a single field's data to Firebase
         function saveField(refPath, value) {
@@ -368,6 +372,8 @@
                 })
                 .catch((error) => console.error("Error loading data:", error));
         }
+
+
 
         // Setup event listeners
         function setupEventListeners() {
