@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Goal Planning Template</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,27 +16,33 @@
             margin: 0 auto;
             padding: 20px;
         }
+
         .logo {
             color: #FF6600;
             font-weight: bold;
             font-size: 18px;
             margin-bottom: 20px;
         }
+
         h1 {
             color: #4A86E8;
             font-size: 22px;
             margin-bottom: 20px;
         }
+
         .section {
             margin-bottom: 20px;
         }
+
         .section-title {
             color: #999;
             font-size: 14px;
             margin-bottom: 5px;
             font-weight: bold;
         }
-        input[type="text"], textarea {
+
+        input[type="text"],
+        textarea {
             width: 100%;
             padding: 5px;
             border: none;
@@ -39,15 +50,19 @@
             font-size: inherit;
             font-family: inherit;
         }
-        input[type="text"]:focus, textarea:focus {
+
+        input[type="text"]:focus,
+        textarea:focus {
             outline: none;
         }
+
         .numbered-input {
             display: flex;
             align-items: center;
             margin-bottom: 5px;
             border: 1px solid #999;
         }
+
         .number {
             background-color: #999;
             color: white;
@@ -59,23 +74,28 @@
             margin-right: 5px;
             font-size: 12px;
         }
+
         .objectives {
             margin-top: 20px;
         }
+
         .objective {
             margin-bottom: 10px;
         }
+
         .objective-header {
             display: flex;
             border: 1px solid #999;
             color: white;
             font-size: 14px;
         }
+
         .objective-title {
             background-color: #999;
             padding: 10px;
             white-space: nowrap;
         }
+
         .objective-name {
             flex-grow: 1;
             color: black;
@@ -83,78 +103,108 @@
             font-size: 14px;
             padding: 5px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #ccc;
             padding: 5px;
             text-align: left;
             font-size: 12px;
         }
+
         th {
             background-color: #999;
             color: white;
         }
+
         .key-results {
             width: 70%;
         }
-        .measured-by, .set-deadline {
+
+        .measured-by,
+        .set-deadline {
             width: 15%;
         }
+
         .key-result-input {
             display: flex;
             align-items: baseline;
         }
+
         .key-result-number {
             margin-right: 5px;
         }
-        .weekly-planning, .desired-outcome {
+
+        .weekly-planning,
+        .desired-outcome {
             margin-top: 20px;
         }
-        .weekly-planning h2, .desired-outcome h2 {
+
+        .weekly-planning h2,
+        .desired-outcome h2 {
             font-size: 16px;
             margin-bottom: 5px;
         }
-        .weekly-planning p, .desired-outcome p {
+
+        .weekly-planning p,
+        .desired-outcome p {
             font-size: 12px;
             margin-top: 0;
             margin-bottom: 10px;
         }
+
         .planning-section {
             margin-bottom: 10px;
         }
+
         .planning-title {
             background-color: #4A5568;
             color: white;
             padding: 5px;
             font-size: 12px;
         }
+
         .planning-content {
             border: 1px solid #ccc;
             padding: 10px;
             min-height: 50px;
         }
+
         .notes {
             margin-top: 20px;
         }
+
         .vision-input {
             border: 1px solid #ccc;
             background-color: white;
         }
+
         .vision-input:focus {
             border: 1px solid transparent;
         }
+
         .desired-outcome p {
             margin-left: 20px;
         }
     </style>
 </head>
+
 <body>
     <div class="logo">WEEKDONE</div>
     <h1>BUSINESS GOAL PLANNER</h1>
-    
+    <div class="absolute top-4 right-60 flex space-x-2">
+        <button id="notepadIcon" class="text-blue-600 hover:text-gray-800">
+            <a href="index.html">
+            <i class="fas fa-pencil-alt"></i></a>
+        </button>
+    </div>
+
+    <!-- Vision Section -->
     <div class="section">
         <div class="section-title">DEFINE VISION (5-10 years)</div>
         <div class="numbered-input">
@@ -163,6 +213,7 @@
         </div>
     </div>
 
+    <!-- Strategy Section -->
     <div class="section">
         <div class="section-title">DEFINE STRATEGY (2 years)</div>
         <div class="numbered-input">
@@ -171,6 +222,7 @@
         </div>
     </div>
 
+    <!-- Yearly Focus Section -->
     <div class="section">
         <div class="section-title">DEFINE YEARLY FOCUS (1 year)</div>
         <div class="numbered-input">
@@ -179,251 +231,96 @@
         </div>
     </div>
 
+    <!-- Objectives and Key Results -->
     <div class="objectives">
         <div>OBJECTIVES & KEY RESULTS</div>
-        <div style="font-size: 12px; margin-bottom: 10px; margin-left: 20px;">• Renewed quarterly</div>
-        <div class="objective">
-            <div class="objective-header">
-                <div class="objective-title">Objective 1</div>
-                <input type="text" class="objective-name" value="Improve brand presence">
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th class="key-results">Key Results</th>
-                        <th class="measured-by">MEASURED BY</th>
-                        <th class="set-deadline">SET DEADLINE</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="key-result-input">
-                                <span class="key-result-number">1.</span>
-                                <input type="text">
-                            </div>
-                        </td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="key-result-input">
-                                <span class="key-result-number">2.</span>
-                                <input type="text">
-                            </div>
-                        </td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="key-result-input">
-                                <span class="key-result-number">3.</span>
-                                <input type="text">
-                            </div>
-                        </td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="key-result-input">
-                                <span class="key-result-number">4.</span>
-                                <input type="text">
-                            </div>
-                        </td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="key-result-input">
-                                <span class="key-result-number">5.</span>
-                                <input type="text">
-                            </div>
-                        </td>
-                        <td><input type="text"></td>
-                        <td><input type="text"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <div class="note">• Renewed quarterly</div>
+
+        <!-- Objective Component -->
+        <div class="objective" id="objective1"></div>
+        <div class="objective" id="objective2"></div>
+        <div class="objective" id="objective3"></div>
     </div>
 
-    <div class="objective">
-        <div class="objective-header">
-            <div class="objective-title">Objective 2</div>
-            <input type="text" class="objective-name" value="Improve our content and its distribution">
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th class="key-results">Key Results</th>
-                    <th class="measured-by">MEASURED BY</th>
-                    <th class="set-deadline">SET DEADLINE</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <div class="key-result-input">
-                            <span class="key-result-number">1.</span>
-                            <input type="text">
-                        </div>
-                    </td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="key-result-input">
-                            <span class="key-result-number">2.</span>
-                            <input type="text">
-                        </div>
-                    </td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="key-result-input">
-                            <span class="key-result-number">3.</span>
-                            <input type="text">
-                        </div>
-                    </td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="key-result-input">
-                            <span class="key-result-number">4.</span>
-                            <input type="text">
-                        </div>
-                    </td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="key-result-input">
-                            <span class="key-result-number">5.</span>
-                            <input type="text">
-                        </div>
-                    </td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="objective">
-        <div class="objective-header">
-            <div class="objective-title">Objective 3</div>
-            <input type="text" class="objective-name" value="Achieve record metrics in blog organic traffic">
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th class="key-results">Key Results</th>
-                    <th class="measured-by">MEASURED BY</th>
-                    <th class="set-deadline">SET DEADLINE</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <div class="key-result-input">
-                            <span class="key-result-number">1.</span>
-                            <input type="text">
-                        </div>
-                    </td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="key-result-input">
-                            <span class="key-result-number">2.</span>
-                            <input type="text">
-                        </div>
-                    </td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="key-result-input">
-                            <span class="key-result-number">3.</span>
-                            <input type="text">
-                        </div>
-                    </td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="key-result-input">
-                            <span class="key-result-number">4.</span>
-                            <input type="text">
-                        </div>
-                    </td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="key-result-input">
-                            <span class="key-result-number">5.</span>
-                            <input type="text">
-                        </div>
-                    </td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="weekly-planning">
-        <h2>WEEKLY PLANNING (PPP) STRUCTURE</h2>
-        <p>• Fill every week on friday</p>
-        <div class="planning-section">
-            <div class="planning-title">What did you accomplish this week? (PROGRESS)</div>
-            <div class="planning-content">
-                <textarea rows="3"></textarea>
-            </div>
-        </div>
-        <div class="planning-section">
-            <div class="planning-title">What do you plan to accomplish next week? (PLANS)</div>
-            <div class="planning-content">
-                <textarea rows="3"></textarea>
-            </div>
-        </div>
-        <div class="planning-section">
-            <div class="planning-title">What possible problems will you run into? (PROBLEMS)</div>
-            <div class="planning-content">
-                <textarea rows="3"></textarea>
-            </div>
-        </div>
-    </div>
-
-    <div class="desired-outcome">
-        <h2>DESIRED OUTCOME</h2>
-        <p>• Fill every week on friday</p>
-        <div class="planning-section">
-            <div class="planning-title">DEFINE MEASUREMENTS FOR SUCCESS (for next week)</div>
-            <div class="planning-content">
-                <textarea rows="3"></textarea>
-            </div>
-        </div>
-    </div>
-
-    <div class="notes">
+    <div class="notes" style="margin-top: 15px;">
         <div>NOTES</div>
         <textarea rows="5"></textarea>
     </div>
+
+    <!-- Scripts -->
+    <script>
+        // Objective Data
+        const objectives = [
+            {
+                title: 'Objective 1',
+                objectiveName: 'Improve brand presence',
+                keyResults: [
+                    { id: 1, result: '', measuredBy: '', deadline: '' },
+                    { id: 2, result: '', measuredBy: '', deadline: '' },
+                    { id: 3, result: '', measuredBy: '', deadline: '' }
+                ]
+            },
+            {
+                title: 'Objective 2',
+                objectiveName: 'Improve our content and its distribution',
+                keyResults: [
+                    { id: 1, result: '', measuredBy: '', deadline: '' },
+                    { id: 2, result: '', measuredBy: '', deadline: '' },
+                    { id: 3, result: '', measuredBy: '', deadline: '' }
+                ]
+            },
+            {
+                title: 'Objective 3',
+                objectiveName: 'Achieve record metrics in blog organic traffic',
+                keyResults: [
+                    { id: 1, result: '', measuredBy: '', deadline: '' },
+                    { id: 2, result: '', measuredBy: '', deadline: '' },
+                    { id: 3, result: '', measuredBy: '', deadline: '' }
+                ]
+            }
+        ];
+
+        // Generate Objective Components
+        function renderObjective(objective, objectiveId) {
+            const objectiveContainer = document.getElementById(objectiveId);
+            const objectiveHTML = `
+        <div class="objective-header">
+            <div class="objective-title">${objective.title}</div>
+            <input type="text" class="objective-name" value="${objective.objectiveName}">
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th class="key-results">Key Results</th>
+                    <th class="measured-by">MEASURED BY</th>
+                    <th class="set-deadline">SET DEADLINE</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${objective.keyResults.map(kr => `
+                    <tr>
+                        <td>
+                            <div class="key-result-input">
+                                <span class="key-result-number">${kr.id}.</span>
+                                <input type="text" value="${kr.result}">
+                            </div>
+                        </td>
+                        <td><input type="text" value="${kr.measuredBy}"></td>
+                        <td><input type="text" value="${kr.deadline}"></td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+            objectiveContainer.innerHTML = objectiveHTML;
+        }
+
+        // Render all objectives
+        objectives.forEach((objective, index) => {
+            renderObjective(objective, `objective${index + 1}`);
+        });
+
+    </script>
 </body>
+
 </html>

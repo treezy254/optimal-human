@@ -24,7 +24,8 @@
                     <i class="fas fa-pencil-alt"></i>
                 </button>
                 <button id="goalsIcon" class="text-gray-600 hover:text-gray-800">
-                    <i class="fas fa-bullseye"></i>
+                    <a href="goals.html">
+                    <i class="fas fa-bullseye"></i></a>
                 </button>
             </div>
             <div id="scheduleHeader" class="font-bold text-sm mb-2">OPTIMAL HUMAN</div>
@@ -156,44 +157,6 @@
         </div>
     </div>
 
-    <!-- Goals Modal -->
-    <div id="goalsModal" class="fixed inset-y-0 right-0 w-3/4 max-w-2xl bg-green-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
-        <div class="p-6 h-full flex flex-col relative">
-            <button id="closeGoalsBtn" class="absolute top-4 right-4 text-gray-600 hover:text-gray-800">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-            <h2 class="text-2xl font-bold mb-4 text-gray-800">Goals</h2>
-            <div class="grid grid-cols-2 gap-6 flex-grow overflow-y-auto pr-2" style="scrollbar-width: thin; scrollbar-color: #4CAF50 #E8F5E9;">
-                <div>
-                    <h3 class="font-bold text-blue-600 mb-2">One-Time Goals</h3>
-                    <div id="oneTimeGoals" class="space-y-2"></div>
-                    <button class="addGoal mt-2 text-blue-500 hover:text-blue-600" data-type="oneTime">+ Add Goal</button>
-                    <div class="mt-2 text-sm text-blue-600" id="oneTimeCompletion"></div>
-                </div>
-                <div>
-                    <h3 class="font-bold text-green-600 mb-2">Daily Goals</h3>
-                    <div id="dailyGoals" class="space-y-2"></div>
-                    <button class="addGoal mt-2 text-green-500 hover:text-green-600" data-type="daily">+ Add Goal</button>
-                    <div class="mt-2 text-sm text-green-600" id="dailyCompletion"></div>
-                </div>
-                <div>
-                    <h3 class="font-bold text-purple-600 mb-2">Weekly Goals</h3>
-                    <div id="weeklyGoals" class="space-y-2"></div>
-                    <button class="addGoal mt-2 text-purple-500 hover:text-purple-600" data-type="weekly">+ Add Goal</button>
-                    <div class="mt-2 text-sm text-purple-600" id="weeklyCompletion"></div>
-                </div>
-                <div>
-                    <h3 class="font-bold text-orange-600 mb-2">Long-Term Goals</h3>
-                    <div id="longTermGoals" class="space-y-2"></div>
-                    <button class="addGoal mt-2 text-orange-500 hover:text-orange-600" data-type="longTerm">+ Add Goal</button>
-                    <div class="mt-2 text-sm text-orange-600" id="longTermCompletion"></div>
-                </div>
-            </div>
-            <div class="mt-4">
-                <button id="saveGoalsBtn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">Save Goals</button>
-            </div>
-        </div>
-    </div>
 
 
     <script>
@@ -299,16 +262,13 @@
         const notepadIcon = document.getElementById('notepadIcon');
             const goalsIcon = document.getElementById('goalsIcon');
             const notepadModal = document.getElementById('notepadModal');
-            const goalsModal = document.getElementById('goalsModal');
+            
             const closeNotepadBtn = document.getElementById('closeNotepadBtn');
             const closeGoalsBtn = document.getElementById('closeGoalsBtn');
             const noteContent = document.getElementById('noteContent');
             const saveNoteBtn = document.getElementById('saveNoteBtn');
             const newNoteBtn = document.getElementById('newNoteBtn');
             const notesList = document.getElementById('notesList');
-            const saveGoalsBtn = document.getElementById('saveGoalsBtn');
-            const addGoalBtns = document.querySelectorAll('.addGoal');
-
             let currentNoteId = null;
 
             notepadIcon.addEventListener('click', () => {
@@ -354,154 +314,8 @@
                 noteContent.value = '';
             });
 
-            // function loadGoals() {
-            //     const goals = JSON.parse(localStorage.getItem('goals')) || {};
-            //     document.getElementById('oneTimeGoal').value = goals.oneTime || '';
-            //     document.getElementById('dailyGoal').value = goals.daily || '';
-            //     document.getElementById('weeklyGoal').value = goals.weekly || '';
-            //     document.getElementById('longTermGoal').value = goals.longTerm || '';
-            // }
-
-            saveGoalsBtn.addEventListener('click', () => {
-                const goals = {
-                    oneTime: document.getElementById('oneTimeGoal').value,
-                    daily: document.getElementById('dailyGoal').value,
-                    weekly: document.getElementById('weeklyGoal').value,
-                    longTerm: document.getElementById('longTermGoal').value
-                };
-                localStorage.setItem('goals', JSON.stringify(goals));
-                goalsModal.classList.add('translate-x-full');
-            });
-
-            function createGoalElement(goal, type) {
-                const div = document.createElement('div');
-                div.className = 'flex items-center space-x-2';
-                div.innerHTML = `
-                    <input type="checkbox" ${goal.completed ? 'checked' : ''}>
-                    <input type="text" value="${goal.text}" class="flex-grow p-2 bg-transparent border-b border-green-200 focus:outline-none focus:border-green-500" style="line-height: 2em;">
-                    <button class="deleteGoal text-red-500 hover:text-red-600">×</button>
-                `;
-                div.querySelector('input[type="checkbox"]').addEventListener('change', (e) => {
-                    goal.completed = e.target.checked;
-                    saveGoals();
-                    updateCompletionPercentage();
-                });
-                div.querySelector('input[type="text"]').addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        addGoal(type);
-                    }
-                });
-                div.querySelector('input[type="text"]').addEventListener('input', (e) => {
-                    goal.text = e.target.value;
-                    saveGoals();
-                });
-                div.querySelector('.deleteGoal').addEventListener('click', () => {
-                    div.remove();
-                    saveGoals();
-                    updateCompletionPercentage();
-                });
-                return div;
-            }
-
-            function updateCompletionPercentage() {
-                ['oneTime', 'daily', 'weekly', 'longTerm'].forEach(type => {
-                    const container = document.getElementById(`${type}Goals`);
-                    const goals = Array.from(container.children);
-                    const totalGoals = goals.length;
-                    const completedGoals = goals.filter(goal => goal.querySelector('input[type="checkbox"]').checked).length;
-                    const percentage = totalGoals === 0 ? 0 : Math.round((completedGoals / totalGoals) * 100);
-                    document.getElementById(`${type}Completion`).textContent = `${completedGoals}/${totalGoals} (${percentage}%) completed`;
-                });
-            }
-
-            function loadGoals() {
-                const goals = JSON.parse(localStorage.getItem('goals')) || {};
-                ['oneTime', 'daily', 'weekly', 'longTerm'].forEach(type => {
-                    const container = document.getElementById(`${type}Goals`);
-                    container.innerHTML = '';
-                    (goals[type] || []).forEach(goal => {
-                        container.appendChild(createGoalElement(goal, type));
-                    });
-                });
-                updateCompletionPercentage();
-            }
-
-            function saveGoals() {
-                const goals = {};
-                ['oneTime', 'daily', 'weekly', 'longTerm'].forEach(type => {
-                    goals[type] = Array.from(document.getElementById(`${type}Goals`).children).map(div => ({
-                        text: div.querySelector('input[type="text"]').value,
-                        completed: div.querySelector('input[type="checkbox"]').checked
-                    }));
-                });
-                localStorage.setItem('goals', JSON.stringify(goals));
-                updateCompletionPercentage();
-            }
-
-            function addGoal(type) {
-                const container = document.getElementById(`${type}Goals`);
-                const newGoal = { text: '', completed: false };
-                container.appendChild(createGoalElement(newGoal, type));
-                container.lastElementChild.querySelector('input[type="text"]').focus();
-                saveGoals();
-            }
-
-            addGoalBtns.forEach(btn => {
-                btn.addEventListener('click', () => addGoal(btn.dataset.type));
-            });
-
-            saveGoalsBtn.addEventListener('click', () => {
-                saveGoals();
-                goalsModal.classList.add('translate-x-full');
-            });
-
-            // Reset completed goals daily
-            function resetDailyGoals() {
-                const goals = JSON.parse(localStorage.getItem('goals')) || {};
-                if (goals.daily) {
-                    goals.daily = goals.daily.map(goal => ({ ...goal, completed: false }));
-                    localStorage.setItem('goals', JSON.stringify(goals));
-                }
-            }
-
-            // Reset completed goals weekly
-            function resetWeeklyGoals() {
-                const goals = JSON.parse(localStorage.getItem('goals')) || {};
-                if (goals.weekly) {
-                    goals.weekly = goals.weekly.map(goal => ({ ...goal, completed: false }));
-                    localStorage.setItem('goals', JSON.stringify(goals));
-                }
-            }
-
-            // Check and reset goals daily
-            const today = new Date().toDateString();
-            const lastResetDate = localStorage.getItem('lastResetDate');
-            if (lastResetDate !== today) {
-                resetDailyGoals();
-                localStorage.setItem('lastResetDate', today);
-            }
-
-            // Check and reset goals weekly (assuming Sunday is the start of the week)
-            const thisWeek = new Date().getWeek();
-            const lastWeeklyReset = localStorage.getItem('lastWeeklyReset');
-            if (lastWeeklyReset !== thisWeek) {
-                resetWeeklyGoals();
-                localStorage.setItem('lastWeeklyReset', thisWeek);
-            }
-
-            // Helper function to get the week number
-            Date.prototype.getWeek = function() {
-                const d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
-                const dayNum = d.getUTCDay() || 7;
-                d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-                const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-                return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
-            };
-
             // Initial load
             loadNotes();
-            loadGoals();
     </script>
     </script>
 </body>
