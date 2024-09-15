@@ -8,7 +8,31 @@
     <title>Business Goal Planning Template</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js"></script>
+
+    <script>
+        import { initializeApp } from "firebase/app";
+        import { getAnalytics } from "firebase/analytics";
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDNAtg7HR9-AsXtARV_xnztFhrWHvtbJz0",
+            authDomain: "optimal-human.firebaseapp.com",
+            databaseURL: "https://optimal-human-default-rtdb.firebaseio.com",
+            projectId: "optimal-human",
+            storageBucket: "optimal-human.appspot.com",
+            messagingSenderId: "90069176733",
+            appId: "1:90069176733:web:c75cf0fd7c5c21be2a1f74",
+            measurementId: "G-WFMNY0SWL8"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const analytics = getAnalytics(app);
+    </script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -200,7 +224,7 @@
     <div class="absolute top-4 right-60 flex space-x-2">
         <button id="notepadIcon" class="text-blue-600 hover:text-gray-800">
             <a href="index.html">
-            <i class="fas fa-pencil-alt"></i></a>
+                <i class="fas fa-pencil-alt"></i></a>
         </button>
     </div>
 
@@ -320,7 +344,58 @@
             renderObjective(objective, `objective${index + 1}`);
         });
 
+
+        // Function to save a single field's data to Firebase
+        function saveField(refPath, value) {
+            database.ref(refPath).set(value)
+                .catch((error) => console.error("Error saving data:", error));
+        }
+
+        // Real-time saving for Vision, Strategy, and Yearly Focus
+        document.querySelector('.section input[type="text"]').addEventListener('input', (event) => {
+            const visionValue = event.target.value;
+            saveField('business-goal-planning/vision', visionValue);
+        });
+
+        document.querySelector('.section:nth-child(3) input[type="text"]').addEventListener('input', (event) => {
+            const strategyValue = event.target.value;
+            saveField('business-goal-planning/strategy', strategyValue);
+        });
+
+        document.querySelector('.section:nth-child(4) input[type="text"]').addEventListener('input', (event) => {
+            const yearlyFocusValue = event.target.value;
+            saveField('business-goal-planning/yearlyFocus', yearlyFocusValue);
+        });
+
+        // Real-time saving for Objectives and Key Results
+        objectives.forEach((objective, index) => {
+            const objectiveNameInput = document.querySelector(`#objective${index + 1} .objective-name`);
+            objectiveNameInput.addEventListener('input', (event) => {
+                saveField(`business-goal-planning/objectives/${index}/objectiveName`, event.target.value);
+            });
+
+            Array.from(document.querySelectorAll(`#objective${index + 1} tbody tr`)).forEach((row, krIndex) => {
+                row.querySelector('input:nth-child(1)').addEventListener('input', (event) => {
+                    saveField(`business-goal-planning/objectives/${index}/keyResults/${krIndex}/result`, event.target.value);
+                });
+
+                row.querySelector('input:nth-child(2)').addEventListener('input', (event) => {
+                    saveField(`business-goal-planning/objectives/${index}/keyResults/${krIndex}/measuredBy`, event.target.value);
+                });
+
+                row.querySelector('input:nth-child(3)').addEventListener('input', (event) => {
+                    saveField(`business-goal-planning/objectives/${index}/keyResults/${krIndex}/deadline`, event.target.value);
+                });
+            });
+        });
+
+        // Real-time saving for Notes
+        document.querySelector('.notes textarea').addEventListener('input', (event) => {
+            const notesValue = event.target.value;
+            saveField('business-goal-planning/notes', notesValue);
+        });
     </script>
+
 </body>
 
 </html>
