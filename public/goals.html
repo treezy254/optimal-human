@@ -3,15 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Goal Planning Template</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- <link rel="stylesheet" href="styles.css"> -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -195,6 +191,8 @@
             margin-left: 20px;
         }
 
+
+        /* Add any additional styles here */
         #saveIndicator {
             position: fixed;
             top: 10px;
@@ -204,21 +202,9 @@
             display: none;
             z-index: 1000;
         }
-
-        .saving {
-            background-color: #fef3c7;
-            color: #92400e;
-        }
-
-        .saved {
-            background-color: #d1fae5;
-            color: #065f46;
-        }
-
-        .error {
-            background-color: #fee2e2;
-            color: #991b1b;
-        }
+        .saving { background-color: #fef3c7; color: #92400e; }
+        .saved { background-color: #d1fae5; color: #065f46; }
+        .error { background-color: #fee2e2; color: #991b1b; }
     </style>
 </head>
 
@@ -277,8 +263,8 @@
         <textarea rows="5"></textarea>
     </div>
 
-    <!-- Scripts -->
     <script>
+        // Initialize Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDNAtg7HR9-AsXtARV_xnztFhrWHvtbJz0",
             authDomain: "optimal-human.firebaseapp.com",
@@ -289,10 +275,9 @@
             appId: "1:90069176733:web:c75cf0fd7c5c21be2a1f74",
             measurementId: "G-WFMNY0SWL8"
         };
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
+        firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+
         // Objective Data
         const objectives = [
             {
@@ -364,13 +349,14 @@
             renderObjective(objective, `objective${index + 1}`);
         });
 
-        // Function to show save indicator
+
+        // Show save indicator
         function showSaveIndicator(message, type) {
             const indicator = document.getElementById('saveIndicator');
             indicator.textContent = message;
             indicator.className = type;
             indicator.style.display = 'block';
-
+            
             if (type !== 'error') {
                 setTimeout(() => {
                     indicator.style.display = 'none';
@@ -378,10 +364,21 @@
             }
         }
 
-        // Function to save a single field's data to Firebase
-        function saveField(refPath, value) {
+        // Save data to Firebase
+        function saveData() {
             showSaveIndicator('Saving...', 'saving');
-            database.ref(refPath).set(value)
+            const data = {
+                vision: document.getElementById('vision').value,
+                strategy: document.getElementById('strategy').value,
+                yearlyFocus: document.getElementById('yearlyFocus').value,
+                objectives: objectives.map((obj, index) => ({
+                    name: document.getElementById(`objective${index}`).value,
+                    keyResults: obj.keyResults.map((_, krIndex) => document.getElementById(`kr${index}_${krIndex}`).value)
+                })),
+                notes: document.getElementById('notes').value
+            };
+
+            database.ref('business-goal-planning').set(data)
                 .then(() => {
                     showSaveIndicator('Saved!', 'saved');
                 })
@@ -391,32 +388,26 @@
                 });
         }
 
-        // Function to load data from Firebase
+        // Load data from Firebase
         function loadData() {
             showSaveIndicator('Loading data...', 'saving');
             database.ref('business-goal-planning').once('value')
                 .then((snapshot) => {
                     const data = snapshot.val();
                     if (data) {
-                        document.querySelector('.section:nth-child(2) input[type="text"]').value = data.vision || '';
-                        document.querySelector('.section:nth-child(3) input[type="text"]').value = data.strategy || '';
-                        document.querySelector('.section:nth-child(4) input[type="text"]').value = data.yearlyFocus || '';
-                        document.querySelector('.notes textarea').value = data.notes || '';
+                        document.getElementById('vision').value = data.vision || '';
+                        document.getElementById('strategy').value = data.strategy || '';
+                        document.getElementById('yearlyFocus').value = data.yearlyFocus || '';
+                        document.getElementById('notes').value = data.notes || '';
 
                         if (data.objectives) {
-                            data.objectives.forEach((objective, index) => {
-                                objectives[index].objectiveName = objective.objectiveName || objectives[index].objectiveName;
-                                objective.keyResults.forEach((kr, krIndex) => {
-                                    objectives[index].keyResults[krIndex] = { ...objectives[index].keyResults[krIndex], ...kr };
-                                });
+                            objectives.forEach((obj, index) => {
+                                obj.name = data.objectives[index].name || '';
+                                obj.keyResults = data.objectives[index].keyResults || ['', '', ''];
                             });
                         }
 
-                        objectives.forEach((objective, index) => {
-                            renderObjective(objective, `objective${index + 1}`);
-                        });
-
-                        setupEventListeners();
+                        renderObjectives();
                         showSaveIndicator('Data loaded!', 'saved');
                     }
                 })
@@ -426,51 +417,10 @@
                 });
         }
 
-        // Setup event listeners
-        function setupEventListeners() {
-            // Vision, Strategy, and Yearly Focus
-            document.querySelector('.section:nth-child(2) input[type="text"]').addEventListener('input', (event) => {
-                saveField('business-goal-planning/vision', event.target.value);
-            });
-
-            document.querySelector('.section:nth-child(3) input[type="text"]').addEventListener('input', (event) => {
-                saveField('business-goal-planning/strategy', event.target.value);
-            });
-
-            document.querySelector('.section:nth-child(4) input[type="text"]').addEventListener('input', (event) => {
-                saveField('business-goal-planning/yearlyFocus', event.target.value);
-            });
-
-            // Objectives and Key Results
-            objectives.forEach((objective, index) => {
-                const objectiveNameInput = document.querySelector(`#objective${index + 1} .objective-name`);
-                objectiveNameInput.addEventListener('input', (event) => {
-                    saveField(`business-goal-planning/objectives/${index}/objectiveName`, event.target.value);
-                });
-
-                Array.from(document.querySelectorAll(`#objective${index + 1} tbody tr`)).forEach((row, krIndex) => {
-                    row.querySelector('input:nth-child(1)').addEventListener('input', (event) => {
-                        saveField(`business-goal-planning/objectives/${index}/keyResults/${krIndex}/result`, event.target.value);
-                    });
-
-                    row.querySelector('input:nth-child(2)').addEventListener('input', (event) => {
-                        saveField(`business-goal-planning/objectives/${index}/keyResults/${krIndex}/measuredBy`, event.target.value);
-                    });
-
-                    row.querySelector('input:nth-child(3)').addEventListener('input', (event) => {
-                        saveField(`business-goal-planning/objectives/${index}/keyResults/${krIndex}/deadline`, event.target.value);
-                    });
-                });
-            });
-
-            // Notes
-            document.querySelector('.notes textarea').addEventListener('input', (event) => {
-                saveField('business-goal-planning/notes', event.target.value);
-            });
-        }
-
-        // Load data and setup event listeners when the page loads
+        // Event Listeners
+        document.getElementById('saveButton').addEventListener('click', saveData);
         window.addEventListener('load', () => {
+            renderObjectives();
             loadData();
         });
     </script>
