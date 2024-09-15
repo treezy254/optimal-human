@@ -9,30 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- <link rel="stylesheet" href="styles.css"> -->
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js"></script>
-
-    <script>
-        import { initializeApp } from "firebase/app";
-        import { getAnalytics } from "firebase/analytics";
-        // Your Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDNAtg7HR9-AsXtARV_xnztFhrWHvtbJz0",
-            authDomain: "optimal-human.firebaseapp.com",
-            databaseURL: "https://optimal-human-default-rtdb.firebaseio.com",
-            projectId: "optimal-human",
-            storageBucket: "optimal-human.appspot.com",
-            messagingSenderId: "90069176733",
-            appId: "1:90069176733:web:c75cf0fd7c5c21be2a1f74",
-            measurementId: "G-WFMNY0SWL8"
-        };
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const analytics = getAnalytics(app);
-    </script>
-
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -273,6 +251,22 @@
 
     <!-- Scripts -->
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDNAtg7HR9-AsXtARV_xnztFhrWHvtbJz0",
+            authDomain: "optimal-human.firebaseapp.com",
+            databaseURL: "https://optimal-human-default-rtdb.firebaseio.com",
+            projectId: "optimal-human",
+            storageBucket: "optimal-human.appspot.com",
+            messagingSenderId: "90069176733",
+            appId: "1:90069176733:web:c75cf0fd7c5c21be2a1f74",
+            measurementId: "G-WFMNY0SWL8"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
         // Objective Data
         const objectives = [
             {
@@ -308,42 +302,36 @@
         function renderObjective(objective, objectiveId) {
             const objectiveContainer = document.getElementById(objectiveId);
             const objectiveHTML = `
-        <div class="objective-header">
-            <div class="objective-title">${objective.title}</div>
-            <input type="text" class="objective-name" value="${objective.objectiveName}">
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th class="key-results">Key Results</th>
-                    <th class="measured-by">MEASURED BY</th>
-                    <th class="set-deadline">SET DEADLINE</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${objective.keyResults.map(kr => `
-                    <tr>
-                        <td>
-                            <div class="key-result-input">
-                                <span class="key-result-number">${kr.id}.</span>
-                                <input type="text" value="${kr.result}">
-                            </div>
-                        </td>
-                        <td><input type="text" value="${kr.measuredBy}"></td>
-                        <td><input type="text" value="${kr.deadline}"></td>
-                    </tr>
-                `).join('')}
-            </tbody>
-        </table>
-    `;
+                <div class="objective-header">
+                    <div class="objective-title">${objective.title}</div>
+                    <input type="text" class="objective-name" value="${objective.objectiveName}">
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="key-results">Key Results</th>
+                            <th class="measured-by">MEASURED BY</th>
+                            <th class="set-deadline">SET DEADLINE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${objective.keyResults.map(kr => `
+                            <tr>
+                                <td>
+                                    <div class="key-result-input">
+                                        <span class="key-result-number">${kr.id}.</span>
+                                        <input type="text" value="${kr.result}">
+                                    </div>
+                                </td>
+                                <td><input type="text" value="${kr.measuredBy}"></td>
+                                <td><input type="text" value="${kr.deadline}"></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
             objectiveContainer.innerHTML = objectiveHTML;
         }
-
-        // Render all objectives
-        objectives.forEach((objective, index) => {
-            renderObjective(objective, `objective${index + 1}`);
-        });
-
 
         // Function to save a single field's data to Firebase
         function saveField(refPath, value) {
@@ -351,48 +339,82 @@
                 .catch((error) => console.error("Error saving data:", error));
         }
 
-        // Real-time saving for Vision, Strategy, and Yearly Focus
-        document.querySelector('.section input[type="text"]').addEventListener('input', (event) => {
-            const visionValue = event.target.value;
-            saveField('business-goal-planning/vision', visionValue);
-        });
+        // Function to load data from Firebase
+        function loadData() {
+            database.ref('business-goal-planning').once('value')
+                .then((snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        document.querySelector('.section:nth-child(2) input[type="text"]').value = data.vision || '';
+                        document.querySelector('.section:nth-child(3) input[type="text"]').value = data.strategy || '';
+                        document.querySelector('.section:nth-child(4) input[type="text"]').value = data.yearlyFocus || '';
+                        document.querySelector('.notes textarea').value = data.notes || '';
 
-        document.querySelector('.section:nth-child(3) input[type="text"]').addEventListener('input', (event) => {
-            const strategyValue = event.target.value;
-            saveField('business-goal-planning/strategy', strategyValue);
-        });
+                        if (data.objectives) {
+                            data.objectives.forEach((objective, index) => {
+                                objectives[index].objectiveName = objective.objectiveName || objectives[index].objectiveName;
+                                objective.keyResults.forEach((kr, krIndex) => {
+                                    objectives[index].keyResults[krIndex] = { ...objectives[index].keyResults[krIndex], ...kr };
+                                });
+                            });
+                        }
 
-        document.querySelector('.section:nth-child(4) input[type="text"]').addEventListener('input', (event) => {
-            const yearlyFocusValue = event.target.value;
-            saveField('business-goal-planning/yearlyFocus', yearlyFocusValue);
-        });
+                        objectives.forEach((objective, index) => {
+                            renderObjective(objective, `objective${index + 1}`);
+                        });
 
-        // Real-time saving for Objectives and Key Results
-        objectives.forEach((objective, index) => {
-            const objectiveNameInput = document.querySelector(`#objective${index + 1} .objective-name`);
-            objectiveNameInput.addEventListener('input', (event) => {
-                saveField(`business-goal-planning/objectives/${index}/objectiveName`, event.target.value);
+                        setupEventListeners();
+                    }
+                })
+                .catch((error) => console.error("Error loading data:", error));
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Vision, Strategy, and Yearly Focus
+            document.querySelector('.section:nth-child(2) input[type="text"]').addEventListener('input', (event) => {
+                saveField('business-goal-planning/vision', event.target.value);
             });
 
-            Array.from(document.querySelectorAll(`#objective${index + 1} tbody tr`)).forEach((row, krIndex) => {
-                row.querySelector('input:nth-child(1)').addEventListener('input', (event) => {
-                    saveField(`business-goal-planning/objectives/${index}/keyResults/${krIndex}/result`, event.target.value);
+            document.querySelector('.section:nth-child(3) input[type="text"]').addEventListener('input', (event) => {
+                saveField('business-goal-planning/strategy', event.target.value);
+            });
+
+            document.querySelector('.section:nth-child(4) input[type="text"]').addEventListener('input', (event) => {
+                saveField('business-goal-planning/yearlyFocus', event.target.value);
+            });
+
+            // Objectives and Key Results
+            objectives.forEach((objective, index) => {
+                const objectiveNameInput = document.querySelector(`#objective${index + 1} .objective-name`);
+                objectiveNameInput.addEventListener('input', (event) => {
+                    saveField(`business-goal-planning/objectives/${index}/objectiveName`, event.target.value);
                 });
 
-                row.querySelector('input:nth-child(2)').addEventListener('input', (event) => {
-                    saveField(`business-goal-planning/objectives/${index}/keyResults/${krIndex}/measuredBy`, event.target.value);
-                });
+                Array.from(document.querySelectorAll(`#objective${index + 1} tbody tr`)).forEach((row, krIndex) => {
+                    row.querySelector('input:nth-child(1)').addEventListener('input', (event) => {
+                        saveField(`business-goal-planning/objectives/${index}/keyResults/${krIndex}/result`, event.target.value);
+                    });
 
-                row.querySelector('input:nth-child(3)').addEventListener('input', (event) => {
-                    saveField(`business-goal-planning/objectives/${index}/keyResults/${krIndex}/deadline`, event.target.value);
+                    row.querySelector('input:nth-child(2)').addEventListener('input', (event) => {
+                        saveField(`business-goal-planning/objectives/${index}/keyResults/${krIndex}/measuredBy`, event.target.value);
+                    });
+
+                    row.querySelector('input:nth-child(3)').addEventListener('input', (event) => {
+                        saveField(`business-goal-planning/objectives/${index}/keyResults/${krIndex}/deadline`, event.target.value);
+                    });
                 });
             });
-        });
 
-        // Real-time saving for Notes
-        document.querySelector('.notes textarea').addEventListener('input', (event) => {
-            const notesValue = event.target.value;
-            saveField('business-goal-planning/notes', notesValue);
+            // Notes
+            document.querySelector('.notes textarea').addEventListener('input', (event) => {
+                saveField('business-goal-planning/notes', event.target.value);
+            });
+        }
+
+        // Load data and setup event listeners when the page loads
+        window.addEventListener('load', () => {
+            loadData();
         });
     </script>
 
