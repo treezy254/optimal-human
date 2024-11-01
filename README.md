@@ -9,7 +9,7 @@ Welcome to the **Daily Timebox App**! This application is designed to help you m
  
 - **Date Selection**: Easily navigate through different dates to plan your tasks.
 - **Top Tasks**: Prioritize your three most important tasks for the day.
-- **Secondary Tasks**: List additional tasks that you aim to complete.
+- **Secondary Tasks**: List additional tasks that you aim to complete. 
 - **Task Brain Dump**: Capture all tasks you want to complete, ensuring nothing is forgotten. 
 - **Timebox Schedule**: Allocate specific time slots for tasks to maintain a structured day.
 
