@@ -5,7 +5,7 @@ Welcome to the **Daily Timebox App**! This application is designed to help you m
 [![Daily Timebox Screenshot](https://github.com/treezy254/optimal-human/blob/master/Screenshot%20from%202024-07-29%2022-49-23.png)](https://github.com/treezy254/optimal-human/blob/master/Screenshot%20from%202024-07-29%2022-49-23.png)
   
    
-## Features
+## Features 
  
 - **Date Selection**: Easily navigate through different dates to plan your tasks.
 - **Top Tasks**: Prioritize your three most important tasks for the day.
