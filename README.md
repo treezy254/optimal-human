@@ -18,7 +18,7 @@ Welcome to the **Daily Timebox App**! This application is designed to help you m
 ### Prerequisites
 
 - A modern web browser (Chrome, Firefox, Safari, Edge).
-- An internet connection to load external libraries. 
+- An internet connection to load external libraries.  
 
 ### Installation
 
