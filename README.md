@@ -14,7 +14,7 @@ Welcome to the **Daily Timebox App**! This application is designed to help you m
 - **Timebox Schedule**: Allocate specific time slots for tasks to maintain a structured day.
 
 ## Getting Started
-
+ 
 ### Prerequisites
 
 - A modern web browser (Chrome, Firefox, Safari, Edge).
