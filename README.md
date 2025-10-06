@@ -1,91 +1,59 @@
-# Daily Timebox App
 
-Welcome to the **Daily Timebox App**! This application is designed to help you manage your daily tasks and schedule efficiently by using the timeboxing method.
+# Daily Timebox Productivity App
 
-[![Daily Timebox Screenshot](https://github.com/treezy254/optimal-human/blob/master/Screenshot%20from%202024-07-29%2022-49-23.png)](https://github.com/treezy254/optimal-human/blob/master/Screenshot%20from%202024-07-29%2022-49-23.png)
-  
-    
-## Features  
-  
-- **Date Selection**: Easily navigate through different dates to plan your tasks.
-- **Top Tasks**: Prioritize your three most important tasks for the day.
-- **Secondary Tasks**: List additional tasks that you aim to complete. 
-- **Task Brain Dump**: Capture all tasks you want to complete, ensuring nothing is forgotten. 
-- **Timebox Schedule**: Allocate specific time slots for tasks to maintain a structured day.
+A modern web application built to enhance daily productivity using the timeboxing method. This app features cloud data synchronization with Firebase, full offline support, and a dynamic productivity dashboard.
 
-## Getting Started
- 
-### Prerequisites
+**[➡️ Live Demo Link Here]** `[ADD YOUR LIVE DEMO LINK HERE]`
 
-- A modern web browser (Chrome, Firefox, Safari, Edge).
-- An internet connection to load external libraries.  
+## Tech Stack
 
-### Installation
+  - **Frontend:** Vanilla JavaScript (ES6+), Tailwind CSS
+  - **Backend & Database:** Firebase (Firestore, Google Authentication)
+  - **Libraries:** Chart.js, Flatpickr
+  - **Tooling:** Vite (for local development)
 
-1. Clone or download this repository.
-2. Open the `index.html` file in your preferred web browser.
+## Key Features
 
-### Usage
+  - **Cloud Synchronization:** Seamlessly saves all tasks, schedules, and projects to Firestore, enabling data persistence across multiple devices.
+  - **Offline-First Support:** The app gracefully falls back to Local Storage, allowing for full functionality even without an internet connection. Data is synced with Firestore upon reconnection.
+  - **User Authentication:** Secure Google Sign-In to keep user data private and synchronized to their account.
+  - **Productivity Dashboard:** A dynamic dashboard built with Chart.js that visualizes task completion rates and productivity trends on a weekly or monthly basis.
+  - **MVC Architecture:** The codebase is structured using a Model-View-Controller (MVC) pattern for clean separation of concerns, scalability, and maintainability.
+  - **Project Management:** Users can create and manage distinct projects, linking tasks to specific goals to track progress more effectively.
 
-1. **Open the App**: Load `index.html` in your web browser.
-2. **Select Date**: Use the date input to pick a date or navigate using the previous and next buttons.
-3. **Enter Tasks**: Fill in your top tasks, secondary tasks, and brain dump tasks.
-4. **Allocate Time**: Use the timebox section to allocate specific times for your tasks.
-5. **Save Progress**: Your tasks and schedule are automatically saved in local storage.
+## Project Structure
 
-## File Structure
+The application follows a Model-View-Controller (MVC) pattern to ensure a clean separation of concerns:
 
-- `index.html`: The main HTML file containing the structure of the app.
-- `script.js`: JavaScript file handling the app’s logic and interactions.
-- `styles.css`: (Optional) Custom styles for the app (if you decide to use external CSS).
-
-### External Libraries
-
-- **Tailwind CSS**: For quick and responsive styling.
-- **Font Awesome**: For icons.
-- **Flatpickr**: For date picking functionality.
-- **Firebase**: For potential backend functionalities (currently used for Firestore and Auth, but not yet implemented in this script).
-
-## Customization
-
-You can customize the app by editing the HTML, CSS, and JavaScript files. 
-
-### Switching to External CSS
-
-1. Create a `styles.css` file.
-2. Move all inline styles or internal styles from `index.html` to `styles.css`.
-3. Link the `styles.css` file in the `head` section of `index.html`:
-   ```html
-   <link rel="stylesheet" href="styles.css">
-   ```
-
-### Example Task Entry
-
-```html
-<ul class="space-y-2">
-    <li class="flex items-center border-b border-gray-200">
-        <input type="checkbox" class="mr-2">
-        <input type="text" class="w-full py-1 focus:outline-none" placeholder="Enter top task 1">
-    </li>
-</ul>
+```
+/js
+├── controller.js       # Handles user input and application logic
+├── model.js            # Manages state and communication with Firebase/localStorage
+├── view.js             # Manages the Timebox view rendering
+├── dashboard.js        # Manages the Dashboard view and chart logic
+├── projects.js         # Manages the Projects model and view
+└── firebase.js         # Firebase configuration and SDK exports
+/index.html             # Main application entry point
 ```
 
-## Contributing
+## Running Locally
 
-Feel free to fork this repository, make your changes, and submit a pull request. Any improvements or bug fixes are welcome!
+1.  **Clone the repository:**
+    ```sh
+    git clone https://github.com/your-username/optimal-human.git
+    ```
+2.  **Navigate to the project directory:**
+    ```sh
+    cd optimal-human
+    ```
+3.  **Start a local server:**
+    This project uses modern JavaScript modules (`import`/`export`). For them to work correctly, you must run the files from a local server.
+    ```sh
+    # If you have Node.js installed, you can use npx serve
+    npx serve
+    ```
+    Then open your browser to the URL provided (e.g., `http://localhost:3000`).
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
-
-## Acknowledgements
-
-- Tailwind CSS for the styling framework.
-- Font Awesome for the icons.
-- Flatpickr for the date picker functionality.
-- Firebase for backend services.
-
----
-
-Thank you for using the Daily Timebox App! We hope it helps you manage your day more effectively. If you have any feedback or suggestions, please reach out.
-
+This project is licensed under the MIT License.

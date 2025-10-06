@@ -1,170 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Timebox</title>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Timebox</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body class="bg-yellow-50 min-h-screen flex justify-center items-center p-4">
+  <div class="relative w-full max-w-4xl">
+    <div id="appContainer" class="bg-white p-6 shadow-lg relative rounded-2xl">
 
-<div class="relative w-full max-w-4xl">
-    <div id="currentTimebox" class="bg-white p-6 shadow-lg relative">
-        <div class="absolute top-4 right-4 flex space-x-2">
-            <button id="notepadIcon" class="text-gray-600 hover:text-gray-800"><i class="fas fa-pencil-alt"></i></button>
-            <button id="goalsIcon" class="text-gray-600 hover:text-gray-800"><a href="goals.html"><i class="fas fa-bullseye"></i></a></button>
-        </div>
+      <div class="absolute top-4 right-4 flex space-x-1">
+        <button data-view="timebox" class="nav-btn group flex items-center justify-center p-2 rounded-md hover:bg-gray-100 transition-all relative">
+          <img src="assets/timebox.svg" alt="Timebox" class="w-5 h-5 text-gray-700 group-hover:text-sky-500 transition-all" />
+        </button>
+        <button data-view="dashboard" class="nav-btn group flex items-center justify-center p-2 rounded-md hover:bg-gray-100 transition-all relative">
+          <img src="assets/dashboard.svg" alt="Dashboard" class="w-5 h-5 text-gray-700 group-hover:text-sky-500 transition-all" />
+          <!-- <span class="nav-tooltip">Dashboard</span> -->
+        </button>
+        <button data-view="projects" class="nav-btn group flex items-center justify-center p-2 rounded-md hover:bg-gray-100 transition-all relative">
+          <img src="assets/projects.svg" alt="Projects" class="w-5 h-5 text-gray-700 group-hover:text-sky-500 transition-all" />
+          <!-- <span class="nav-tooltip">Projects</span> -->
+        </button>
+      </div>
 
-        <div id="scheduleHeader" class="font-bold text-sm mb-2">OPTIMAL HUMAN</div>
-        <h1 class="text-xl font-bold mb-4">DAILY TIMEBOX</h1>
+      <div id="scheduleHeader" class="font-bold text-sm mb-2">OPTIMAL HUMAN</div>
+      <h1 id="viewTitle" class="text-xl font-bold mb-4">DAILY TIMEBOX</h1>
 
+      <div id="timeboxView">
         <div class="mb-4 flex items-center">
-            <input type="text" id="dateInput" placeholder="DATE: / /" class="w-full border-b border-gray-300 pb-1 focus:outline-none">
-            <button id="prevDate" class="ml-2 px-2 py-1 bg-gray-200 rounded">&lt;</button>
-            <button id="nextDate" class="ml-2 px-2 py-1 bg-gray-200 rounded">&gt;</button>
+          <input type="text" id="dateInput" placeholder="DATE: / /" class="w-full border-b border-gray-300 pb-1 focus:outline-none">
+          <button id="prevDate" class="ml-2 px-2 py-1 bg-gray-200 rounded">&lt;</button>
+          <button id="nextDate" class="ml-2 px-2 py-1 bg-gray-200 rounded">&gt;</button>
         </div>
-
         <div class="flex flex-col lg:flex-row gap-6">
-            <!-- Left Side -->
-            <div class="flex-grow lg:w-1/2">
-                <div class="mb-6">
-                    <h2 class="text-sm font-bold mb-1">3 TOP TASKS</h2>
-                    <p class="text-xs text-gray-600 mb-2">What can you accomplish today to meet your weekly outcomes?</p>
-                    <ul id="topTasksList" class="space-y-2"></ul>
-                </div>
-
-                <div class="mb-6">
-                    <h2 class="text-sm font-bold mb-1">SECONDARY TASKS</h2>
-                    <ul id="secondaryTasksList" class="space-y-2"></ul>
-                </div>
-
-                <div class="border border-gray-300 p-4">
-                    <h2 class="text-sm font-bold mb-1">Task Brain Dump</h2>
-                    <p class="text-xs text-gray-600 mb-2">Dump all of the tasks that you want to complete</p>
-                    <div id="brainDumpLines" class="space-y-2"></div>
-                </div>
+          <div class="flex-grow lg:w-1/2">
+            <div class="mb-6">
+              <h2 class="text-sm font-bold mb-1">3 TOP TASKS</h2>
+              <ul id="topTasksList" class="space-y-2"></ul>
             </div>
-
-            <!-- Right Side -->
-            <div class="lg:w-1/2">
-                <div id="timeboxGrid" class="grid grid-cols-2 gap-1"></div>
+            <div class="mb-6">
+              <h2 class="text-sm font-bold mb-1">SECONDARY TASKS</h2>
+              <ul id="secondaryTasksList" class="space-y-2"></ul>
             </div>
+            <div class="border border-gray-300 p-4 rounded-lg">
+              <h2 class="text-sm font-bold mb-1">Task Brain Dump</h2>
+              <div id="brainDumpLines" class="space-y-2"></div>
+            </div>
+          </div>
+          <div class="lg:w-1/2">
+            <div id="timeboxGrid" class="grid grid-cols-2 gap-1"></div>
+          </div>
         </div>
+      </div>
+
+      <div id="dashboardView" class="hidden"></div>
+
+      <div id="projectsView" class="hidden"></div>
+      <div class="absolute bottom-3 right-3 flex flex-col items-end text-xs text-gray-600 space-y-1">
+         <div class="flex items-center space-x-2">
+            <span id="userDisplay" class="text-gray-500 text-xs"></span>
+            <button id="loginBtn" class="px-2 py-1 bg-blue-500 text-white rounded text-xs">Connect Google</button>
+            <button id="logoutBtn" class="px-2 py-1 bg-gray-400 text-white rounded text-xs hidden">Logout</button>
+         </div>
+         <p class="text-[10px] text-gray-400">© 2025 Optimal-human | <a href="privacy.html" class="underline hover:text-gray-600">Privacy Policy</a></p>
+      </div>
     </div>
-</div>
+  </div>
 
-<!-- Notepad Modal -->
-<div id="notepadModal" class="fixed inset-y-0 right-0 w-3/4 max-w-2xl bg-yellow-100 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
-    <div class="p-6 h-full flex flex-col relative">
-        <button id="closeNotepadBtn" class="absolute top-4 right-4 text-gray-600 hover:text-gray-800"><i class="fas fa-times text-xl"></i></button>
-        <h2 class="text-2xl font-bold mb-4 text-gray-800">Notepad</h2>
-        <div class="flex flex-grow">
-            <div class="w-1/3 pr-4 border-r border-yellow-200">
-                <h3 class="font-bold mb-2 text-gray-700">Notes</h3>
-                <ul id="notesList" class="space-y-2"></ul>
-                <button id="newNoteBtn" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">New Note</button>
-            </div>
-            <div class="w-2/3 pl-4 flex flex-col">
-                <textarea id="noteContent" class="flex-grow p-4 bg-yellow-50 border-0 rounded shadow-inner" style="background-image: repeating-linear-gradient(transparent, transparent 31px, #F3E8D7 31px, #F3E8D7 32px); line-height: 32px;" placeholder="Write your note here..."></textarea>
-                <button id="saveNoteBtn" class="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Save Note</button>
-            </div>
-        </div>
+  <div id="projectModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-sm">
+      <h2 class="text-lg font-bold mb-4">Create New Project</h2>
+      <input type="text" id="newProjectName" class="w-full border border-gray-300 p-2 rounded mb-4" placeholder="Project Name">
+      <div class="flex justify-end space-x-2">
+        <button id="cancelProjectBtn" class="px-4 py-2 bg-gray-200 rounded">Cancel</button>
+        <button id="saveProjectBtn" class="px-4 py-2 bg-blue-500 text-white rounded">Save</button>
+      </div>
     </div>
-</div>
+  </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    // Generate repeated UI dynamically
-    const makeTaskList = (id, count, placeholderPrefix, small=false) => {
-        document.getElementById(id).innerHTML = Array.from({ length: count }, (_, i) => `
-            <li class="flex items-center border-b border-gray-200">
-                <input type="checkbox" class="mr-2">
-                <input type="text" class="w-full ${small ? 'border-b border-gray-200 py-1 text-xs' : 'py-1'} focus:outline-none"
-                    placeholder="${placeholderPrefix} ${i+1}">
-            </li>`).join('');
-    };
-    makeTaskList('topTasksList', 3, 'Enter top task');
-    makeTaskList('secondaryTasksList', 2, 'Enter secondary task');
-    makeTaskList('brainDumpLines', 5, 'Enter task', true);
-
-    // Timebox hours
-    const hours = ['3am','4am','5am','6am','7am','8am','9am','10am'];
-    document.getElementById('timeboxGrid').innerHTML = hours.map(h => `
-        <div class="text-xs text-gray-600 text-right pr-2">${h}</div>
-        <input type="text" class="text-xs border-b border-gray-200 focus:outline-none">`).join('');
-
-    // Input section map for saving/loading
-    const sections = {
-        topTasks: '#topTasksList',
-        secondaryTasks: '#secondaryTasksList',
-        brainDump: '#brainDumpLines',
-        timebox: '#timeboxGrid'
-    };
-    const getInputs = (sel, type) => document.querySelectorAll(`${sel} input[type="${type}"]`);
-    const inputs = Object.fromEntries(Object.entries(sections).map(([k, sel]) => [k, {
-        text: getInputs(sel, 'text'),
-        checkbox: getInputs(sel, 'checkbox')
-    }]));
-
-    let currentDate = new Date();
-    const dateInput = document.getElementById('dateInput');
-    const scheduleHeader = document.getElementById('scheduleHeader');
-
-    flatpickr(dateInput, {
-        dateFormat: "m/d/Y",
-        onChange: ([d]) => { currentDate = d; updateSchedule(); }
-    });
-
-    const formatDate = d => `${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()}`;
-
-    function updateSchedule(){
-        dateInput.value = formatDate(currentDate);
-        loadFromLocalStorage(formatDate(currentDate));
-        updateHeaderColor();
-    }
-
-    function updateHeaderColor(){
-        const today = new Date(); today.setHours(0,0,0,0);
-        currentDate.setHours(0,0,0,0);
-        scheduleHeader.classList.remove('text-green-500','text-blue-500','text-orange-500');
-        scheduleHeader.classList.add(
-            currentDate.getTime() === today.getTime() ? 'text-green-500' :
-            currentDate > today ? 'text-blue-500' : 'text-orange-500'
-        );
-    }
-
-    function saveToLocalStorage(){
-        const data = {};
-        for (let [k, {text, checkbox}] of Object.entries(inputs)) {
-            data[k] = { text: [...text].map(t=>t.value), checkbox: [...checkbox].map(c=>c.checked) };
-        }
-        localStorage.setItem(`dailyTimeboxData_${formatDate(currentDate)}`, JSON.stringify(data));
-    }
-
-    function loadFromLocalStorage(date){
-        const saved = JSON.parse(localStorage.getItem(`dailyTimeboxData_${date}`)) || {};
-        for (let [k, {text, checkbox}] of Object.entries(inputs)) {
-            [...text].forEach((t,i)=> t.value = saved[k]?.text?.[i] || '');
-            [...checkbox].forEach((c,i)=> c.checked = saved[k]?.checkbox?.[i] || false);
-        }
-    }
-
-    document.getElementById('prevDate').onclick = () => { currentDate.setDate(currentDate.getDate()-1); updateSchedule(); };
-    document.getElementById('nextDate').onclick = () => { currentDate.setDate(currentDate.getDate()+1); updateSchedule(); };
-
-    [...document.querySelectorAll('input')].forEach(el => {
-        el.addEventListener('input', saveToLocalStorage);
-        el.addEventListener('change', saveToLocalStorage);
-    });
-
-    updateSchedule();
-
-    // Notepad logic stays same as yours...
-});
-</script>
+  <script type="module" src="js/controller.js"></script>
 </body>
 </html>
