@@ -16,13 +16,14 @@ export const DashboardView = {
     const stats = this.calculateStats(allTimeboxData);
 
     const renderStatCard = (value, title, styleType = 'neutral') => {
+      // ... (this function remains the same)
       const baseStyle = "rounded-xl p-5 shadow-sm border border-gray-100 transition-colors";
-      let style = "bg-white text-gray-900"; // default background + text
-      let titleColor = "text-gray-700 font-medium"; // better contrast
-      let valueColor = "text-gray-900 font-bold"; // default
+      let style = "bg-white text-gray-900"; 
+      let titleColor = "text-gray-700 font-medium"; 
+      let valueColor = "text-gray-900 font-bold"; 
 
       if (styleType === "completed") {
-        style = "bg-green-500 text-white"; // completed tasks = green
+        style = "bg-green-500 text-white"; 
         titleColor = "text-green-100";
         valueColor = "text-white";
       }
@@ -48,9 +49,9 @@ export const DashboardView = {
         <div class="flex justify-between items-center">
           <p class="text-sm text-gray-500">Your productivity overview.</p>
         </div>
-
-        <div class="grid gap-6" style="grid-template-columns: 1fr 280px;">
-          <div class="bg-white border border-gray-200 text-gray-900 p-6 rounded-2xl" style="height: 350px;">
+        <div class="flex flex-col lg:flex-row gap-6">
+        
+          <div class="flex-1 bg-white border border-gray-200 text-gray-900 p-6 rounded-2xl" style="height: 350px;">
             <div class="flex items-center justify-between mb-4">
               <div class="flex items-center gap-2 rounded-lg bg-gray-100 p-1">
                 <button id="weeklyBtn" class="chart-range-btn px-3 py-1 text-xs font-semibold rounded-md bg-white">Weekly</button>
@@ -63,25 +64,20 @@ export const DashboardView = {
               <span class="text-xs text-gray-600">Productivity (Completed %)</span>
             </div>
 
-            <div id="chartTooltipHeader" class="absolute top-8 left-0 text-center transition-all duration-200 ease-out opacity-0 pointer-events-none">
-              <div class="bg-gray-800 text-white rounded-lg px-3 py-1.5 shadow-lg">
-                <p class="font-bold text-sm" id="tooltipPercent"></p>
-                <p class="text-xs text-gray-300" id="tooltipMessage"></p>
-              </div>
-              <div class="mx-auto mt-1 w-2.5 h-2.5 bg-gray-800 rounded-full"></div>
-            </div>
-
+ 
+            
             <div style="height: 200px;">
               <canvas id="productivityChart"></canvas>
             </div>
           </div>
 
-          <div class="space-y-4">
+          <div class="lg:w-72 flex-shrink-0 space-y-4">
             ${renderStatCard(`${stats.tasksCompletedToday}`, 'Tasks Completed', 'completed')}
             ${renderStatCard(`${stats.totalTasksToday}`, 'Total Tasks')}
             ${renderStatCard(`${stats.avgProductivity}%`, 'Avg Productivity')}
           </div>
         </div>
+
       </div>
     `;
 
@@ -89,6 +85,8 @@ export const DashboardView = {
     this.attachEventListeners();
   },
 
+  // ... (all other methods like calculateStats, calculateChartData, etc. remain the same) ...
+  
   calculateStats(allTimeboxData) {
     const today = new Date();
     const yesterday = new Date(today);

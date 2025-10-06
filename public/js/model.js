@@ -40,6 +40,20 @@ export const TimeboxModel = {
     return JSON.parse(localStorage.getItem(`dailyTimeboxData_${key}`)) || {};
   },
 
+  loadAllLocalData() {
+    const allData = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key.startsWith('dailyTimeboxData_')) {
+        const dateKey = key.replace('dailyTimeboxData_', '');
+        allData[dateKey] = JSON.parse(localStorage.getItem(key));
+      }
+    }
+    return allData;
+  },
+  
+  // --- NEW FUNCTION ---
+  // Fetches all timebox data from Firestore for the current user
   async loadAllFirestoreData() {
     const user = auth.currentUser;
     if (!user) return {}; // No user, nothing to load from cloud
