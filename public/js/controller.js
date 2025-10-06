@@ -1,9 +1,9 @@
 // js/controller.js (updated)
 
 import { TimeboxModel } from './model.js';
-import { TimeboxView } from './view.js';
-import { ProjectsModel, ProjectsView } from './projects.js';
-import { DashboardView } from './dashboard.js';
+import { TimeboxView } from './views/timebox.js';
+import { ProjectsModel, ProjectsView } from './views/projects.js';
+import { DashboardView } from './views/dashboard.js';
 import { auth, provider, signInWithPopup, onAuthStateChanged, signOut } from './firebase.js';
 
 // --- HELPER FUNCTION ---

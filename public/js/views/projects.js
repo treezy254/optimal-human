@@ -1,5 +1,5 @@
 // js/projects.js
-import { auth, db, doc, setDoc, getDoc, collection, getDocs, updateDoc } from './firebase.js';
+import { auth, db, doc, setDoc, getDoc, collection, getDocs, updateDoc } from '../firebase.js';
 
 // --- MODEL ---
 export const ProjectsModel = {
