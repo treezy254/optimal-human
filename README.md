@@ -1,59 +1,77 @@
-
 # Daily Timebox Productivity App
 
-A modern web application built to enhance daily productivity using the timeboxing method. This app features cloud data synchronization with Firebase, full offline support, and a dynamic productivity dashboard.
+A modern web application designed to enhance daily productivity through the timeboxing method. Built with vanilla JavaScript and Firebase, this app provides cloud data synchronization, full offline support, and comprehensive productivity analytics to help you optimize your time management.
 
-**[➡️ Live Demo Link Here]** `[ADD YOUR LIVE DEMO LINK HERE]`
+**[🚀 Live Demo](https://optimal-human.web.app/)**
 
 ## Tech Stack
 
-  - **Frontend:** Vanilla JavaScript (ES6+), Tailwind CSS
-  - **Backend & Database:** Firebase (Firestore, Google Authentication)
-  - **Libraries:** Chart.js, Flatpickr
-  - **Tooling:** Vite (for local development)
+- **Frontend:** Vanilla JavaScript (ES6+), Tailwind CSS
+- **Backend:** Firebase (Firestore, Google Authentication)
+- **Hosting:** Firebase Hosting
 
 ## Key Features
 
-  - **Cloud Synchronization:** Seamlessly saves all tasks, schedules, and projects to Firestore, enabling data persistence across multiple devices.
-  - **Offline-First Support:** The app gracefully falls back to Local Storage, allowing for full functionality even without an internet connection. Data is synced with Firestore upon reconnection.
-  - **User Authentication:** Secure Google Sign-In to keep user data private and synchronized to their account.
-  - **Productivity Dashboard:** A dynamic dashboard built with Chart.js that visualizes task completion rates and productivity trends on a weekly or monthly basis.
-  - **MVC Architecture:** The codebase is structured using a Model-View-Controller (MVC) pattern for clean separation of concerns, scalability, and maintainability.
-  - **Project Management:** Users can create and manage distinct projects, linking tasks to specific goals to track progress more effectively.
+### ⏱️ Timeboxing
+Allocate specific time blocks to tasks and activities, helping you maintain focus and manage your schedule effectively.
 
-## Project Structure
+### 📊 Productivity Analytics
+Track your daily, weekly, and monthly productivity patterns with detailed analytics and visualizations to identify trends and optimize your workflow.
 
-The application follows a Model-View-Controller (MVC) pattern to ensure a clean separation of concerns:
-
-```
-/js
-├── controller.js       # Handles user input and application logic
-├── model.js            # Manages state and communication with Firebase/localStorage
-├── view.js             # Manages the Timebox view rendering
-├── dashboard.js        # Manages the Dashboard view and chart logic
-├── projects.js         # Manages the Projects model and view
-└── firebase.js         # Firebase configuration and SDK exports
-/index.html             # Main application entry point
-```
+### 📁 Project Management
+Organize tasks into projects, set priorities, and monitor progress across multiple initiatives in a centralized dashboard.
 
 ## Running Locally
+
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn package manager
+
+### Installation
 
 1.  **Clone the repository:**
     ```sh
     git clone https://github.com/your-username/optimal-human.git
     ```
+
 2.  **Navigate to the project directory:**
     ```sh
     cd optimal-human
     ```
-3.  **Start a local server:**
-    This project uses modern JavaScript modules (`import`/`export`). For them to work correctly, you must run the files from a local server.
+
+3.  **Navigate to the public directory:**
     ```sh
-    # If you have Node.js installed, you can use npx serve
-    npx serve
+    cd public
     ```
-    Then open your browser to the URL provided (e.g., `http://localhost:3000`).
+
+4.  **Install http-server globally (if not already installed):**
+    ```sh
+    npm install -g http-server
+    ```
+
+5.  **Start the development server:**
+    ```sh
+    http-server -p 8080
+    ```
+
+6.  **Open your browser and visit:**
+    ```
+    http://localhost:8080
+    ```
+
+### Firebase Configuration
+
+To run the app with full functionality, you'll need to configure Firebase:
+
+1. Create a Firebase project at [Firebase Console](https://console.firebase.google.com/)
+2. Enable Firestore Database and Google Authentication
+3. Copy your Firebase configuration credentials
+4. Update the Firebase config in your project's configuration file
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License.
+This project is open source and available under the MIT License.
