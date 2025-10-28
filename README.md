@@ -4,6 +4,8 @@ A modern web application designed to enhance daily productivity through the time
 
 **[🚀 Live Demo](https://optimal-human.web.app/)**
 
+![App Screenshot](https://github.com/treezy254/optimal-human/blob/master/Screenshot%20from%202024-07-29%2022-49-23.png?raw=true)
+
 ## Tech Stack
 
 - **Frontend:** Vanilla JavaScript (ES6+), Tailwind CSS
@@ -31,7 +33,7 @@ Organize tasks into projects, set priorities, and monitor progress across multip
 
 1.  **Clone the repository:**
     ```sh
-    git clone https://github.com/your-username/optimal-human.git
+    git clone https://github.com/treezy254/optimal-human.git
     ```
 
 2.  **Navigate to the project directory:**
